@@ -162,7 +162,7 @@ body.unlocked .strip.locked .nm::after { display: none; }
 .hit { padding: 6px 8px; border-radius: 8px; background: var(--bg); cursor: pointer; font-size: 13px; }
 .hit b { display: block; }
 .hit:hover { outline: 1px solid var(--acc); }
-.strip { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 8px; }
+.strip { display: flex; gap: 8px; overflow-x: auto; overflow-y: hidden; padding: 4px 2px 8px; flex-shrink: 0; }
 .thumb { position: relative; flex: 0 0 auto; width: 92px; border: 2px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--card); cursor: pointer; }
 .thumb.on { border-color: var(--acc); }
 .thumb.drag { opacity: .4; } .thumb.over { outline: 3px solid var(--acc); }
