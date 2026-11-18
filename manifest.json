@@ -1,0 +1,17 @@
+{
+  "name": "ScanPress - OCR to Searchable PDF & Word",
+  "short_name": "ScanPress",
+  "description": "Turn scans, photos and scanned PDFs into searchable PDF, Word and text with OCR on your own computer. 30+ languages. Works offline.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#b45309",
+  "theme_color": "#b45309",
+  "categories": ["productivity", "business", "utilities"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "file_handlers": [{ "action": "./", "accept": { "image/*": [".jpg", ".jpeg", ".png", ".webp", ".bmp", ".tif", ".tiff"], "application/pdf": [".pdf"] } }]
+}

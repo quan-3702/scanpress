@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ScanPress - OCR to Searchable PDF &amp; Word</title>
+  <meta name="description" content="Turn scans, photos and scanned PDFs into searchable PDF, Word and text with OCR that runs on your own computer. 30+ languages. Works offline, nothing is uploaded.">
+  <meta name="theme-color" content="#b45309">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><img src="icon-192.png" alt="" width="30" height="30"><span>ScanPress</span></div>
+    <div class="top-btns">
+      <button id="newBtn" class="primary">＋ New scan</button>
+      <button id="moreBtn" class="tb" aria-label="More">☰</button>
+      <button id="proBtn" class="pro-btn">★ Get Pro</button>
+    </div>
+    <div id="menu" class="menu" hidden>
+      <button id="batchBtn">📚 Many files, each as its own document… <span class="pro-tag">PRO</span></button>
+      <button id="storageBtn">💽 Storage used on this computer</button>
+      <hr>
+      <button id="trialBtn">🎁 Try Pro free for 7 days</button>
+      <button id="trialEndBtn" hidden>End the Pro trial</button>
+      <a href="help.html" target="_blank" rel="noopener">❓ How to use ScanPress</a>
+      <a href="mailto:thequan03072002@gmail.com?subject=ScanPress%20feedback">✉ Feedback &amp; support</a>
+      <button id="aboutBtn">ℹ About ScanPress</button>
+    </div>
+    <input id="fileIn" type="file" accept="image/*,.pdf,application/pdf" multiple hidden>
+    <input id="batchIn" type="file" accept="image/*,.pdf,application/pdf" multiple hidden>
+  </header>
+
+  <main class="layout">
+    <aside class="left">
+      <input id="search" class="search" type="search" placeholder="🔍 Search inside all documents…" aria-label="Search inside all documents">
+      <div id="hits" class="hits" hidden></div>
+      <div class="lib-head"><h3>📄 Documents</h3><span id="libCount" class="muted small"></span></div>
+      <div id="libList" class="lib"></div>
+      <p class="fb-note">💬 Something not working the way you want? Tell me – <a href="mailto:thequan03072002@gmail.com?subject=ScanPress%20feedback">thequan03072002@gmail.com</a>. I read every message and improve the app.</p>
+    </aside>
+
+    <section class="stage">
+      <div id="empty" class="empty">
+        <div class="drop" id="drop">
+          <div class="big">🧾</div>
+          <h1>Make scans and photos searchable</h1>
+          <p>Drop scans, phone photos of documents or scanned PDFs here. ScanPress reads the text (OCR) on this computer and makes a <b>searchable PDF</b>, a <b>Word</b> file or plain text. <strong>Nothing is uploaded.</strong></p>
+          <div class="row-btns center"><button id="addBtn2" class="primary big-btn">＋ Add scans or photos</button><button id="camBtn2" class="ghost big-btn">📷 Use the camera</button></div>
+          <p class="muted small">JPG, PNG, WEBP, BMP, TIFF and PDF · English, Vietnamese, Spanish, French, German, Chinese, Japanese and 25 more languages</p>
+        </div>
+      </div>
+
+      <div id="view" hidden>
+        <div class="vhead">
+          <input id="title" class="title-in" type="text" maxlength="120" aria-label="Document name">
+          <span id="info" class="muted small"></span>
+        </div>
+        <div id="banner" class="err" hidden></div>
+        <div class="bar">
+          <button id="addBtn" class="ghost">＋ Add pages</button>
+          <button id="camBtn" class="ghost">📷 Camera</button>
+          <label class="field inline">Text language <select id="lang1"></select></label>
+          <label class="field inline">and <select id="lang2"><option value="">–</option></select></label>
+          <span class="spacer"></span>
+          <button id="exportBtn" class="primary">⬇ Save</button>
+          <button id="copyAllBtn" class="ghost">📋 Copy all text</button>
+          <button id="delBtn" class="ghost danger" title="Delete this document">🗑</button>
+        </div>
+        <div id="prog" class="progress" hidden><div class="pbar"><i id="pfill"></i></div><span id="ptext" class="muted small"></span></div>
+        <div id="strip" class="strip"></div>
+        <div class="editor">
+          <div class="pane">
+            <div class="ptools">
+              <button id="rotL" class="ghost small" title="Turn left">⟲</button>
+              <button id="rotR" class="ghost small" title="Turn right">⟳</button>
+              <button id="cropBtn" class="ghost small">✂ Crop</button>
+              <label class="field inline small">Look <select id="filter"><option value="enhance">✨ Clean scan</option><option value="none">Original colours</option><option value="gray">Grey</option><option value="bw">Black &amp; white</option></select></label>
+              <span class="spacer"></span>
+              <button id="delPage" class="ghost small danger">Remove page</button>
+            </div>
+            <div class="canvas-wrap" id="cwrap"><canvas id="pageCv"></canvas><div id="cropBox" class="crop" hidden><i data-h="nw"></i><i data-h="ne"></i><i data-h="sw"></i><i data-h="se"></i></div><div id="hl" class="hl-layer"></div></div>
+            <div id="cropBar" class="row-btns tight" hidden><button id="cropOk" class="primary small">✓ Apply crop</button><button id="cropReset" class="ghost small">Whole page</button><button id="cropCancel" class="ghost small">Cancel</button></div>
+          </div>
+          <div class="pane text-pane">
+            <div class="ptools"><b>Text on this page</b><span id="conf" class="muted small"></span><span class="spacer"></span><button id="copyPage" class="ghost small">📋 Copy</button></div>
+            <textarea id="pageText" spellcheck="true" placeholder="The text appears here after reading."></textarea>
+            <p class="hint">You can correct the text here – Word and text files use your corrections.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="exportDialog" class="dlg">
+    <h2>Save</h2>
+    <div class="formats" id="formats">
+      <label><input type="radio" name="fmt" value="pdf" checked> 📄 Searchable PDF</label>
+      <label><input type="radio" name="fmt" value="docx"> 📝 Word (.docx) <span class="pro-tag">PRO</span></label>
+      <label><input type="radio" name="fmt" value="txt"> 🗒 Text (.txt)</label>
+    </div>
+    <label class="field" id="paperRow">Page size <select id="paper"><option value="a4">A4</option><option value="letter">Letter</option><option value="legal">Legal</option><option value="image">Same as the picture</option></select></label>
+    <label class="field" id="qualRow">Picture quality <select id="quality"><option value="0.8">Normal (smaller file)</option><option value="0.92">High</option><option value="0.6">Small (for e-mail)</option></select></label>
+    <p id="exMsg" class="pro-msg" hidden></p>
+    <div class="row-btns"><button id="exGo" class="primary">⬇ Save</button><button id="exCancel" class="ghost">Close</button></div>
+  </dialog>
+
+  <dialog id="camDialog" class="dlg wide">
+    <h2>Camera</h2>
+    <video id="camVideo" autoplay playsinline muted></video>
+    <div class="row-btns"><button id="camShot" class="primary">📸 Take the picture</button><button id="camClose" class="ghost">Close</button></div>
+  </dialog>
+
+  <dialog id="proDialog" class="dlg">
+    <h2>ScanPress Pro</h2>
+    <p class="muted">One-time purchase. Yours forever on this Microsoft account. No subscription, ever.</p>
+    <ul class="pro-list">
+      <li><strong>Documents of any length</strong> <span class="muted">(free: 3 pages per document)</span></li>
+      <li><strong>Scanned PDFs</strong> – open them and make them searchable</li>
+      <li><strong>Word (.docx)</strong> export</li>
+      <li><strong>Search inside all your documents</strong> at once</li>
+      <li><strong>Many files at once</strong>, each as its own document</li>
+      <li><strong>Clean PDFs</strong> without the “Made with ScanPress” line</li>
+    </ul>
+    <p class="fb-note">💬 Something not working the way you want? Tell me – <a href="mailto:thequan03072002@gmail.com?subject=ScanPress%20feedback">thequan03072002@gmail.com</a>. I read every message and improve the app.</p>
+    <p id="proMsg" class="pro-msg" hidden></p>
+    <div class="row-btns">
+      <button id="buyBtn" class="primary" autofocus>Unlock Pro</button>
+      <button id="restoreBtn" class="ghost">Restore purchase</button>
+      <button id="closePro" class="ghost">Not now</button>
+    </div>
+  </dialog>
+
+  <dialog id="aboutDialog" class="dlg">
+    <h2>ScanPress</h2>
+    <p>Version 1.0 · Developed by <b>NTQ37</b>.</p>
+    <p class="muted small">ScanPress™ © 2026 NTQ37. All rights reserved. Text recognition: Tesseract OCR (Apache-2.0) via Tesseract.js (Apache-2.0); PDF reading: PDF.js by Mozilla (Apache-2.0).</p>
+    <div class="row-btns"><button id="aboutPro" class="primary">★ Activate Pro</button><button id="aboutClose" class="ghost">Close</button></div>
+  </dialog>
+
+  <div id="toast" class="toast" hidden></div>
+  <div id="restartBar" class="restart" hidden>A new version of ScanPress is ready. <button id="restartBtn" class="primary">Restart now</button></div>
+  <script src="tesseract.min.js"></script>
+  <script src="scan-core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
